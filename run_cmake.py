@@ -48,7 +48,11 @@ def run(project, arguments, buildType=''):
     specialTarget = ''
     specialTargetFile = scriptPath + '/../' + project + '/build/target'
     if os.path.isfile(specialTargetFile):
-        with open(specialTargetFile, 'r') as f:
+        base_real = os.path.realpath(scriptPath + '/../')
+        target_real = os.path.realpath(specialTargetFile)
+        if os.path.commonpath([base_real, target_real]) != base_real:
+            raise Exception('Invalid file path')
+        with open(target_real, 'r') as f:
             for line in f:
                 target = line.strip()
                 if len(target) > 0:
